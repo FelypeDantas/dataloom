@@ -43,10 +43,10 @@ function Logo({ compact = false }: LogoProps) {
       className="flex items-center gap-2"
     >
       <div
-        className={cn(
-          "flex items-center justify-center rounded-sm bg-foreground",
-          compact ? "size-4" : "size-6",
-        )}
+          className={cn(
+              "grid place-items-center rounded-sm bg-foreground",
+              compact ? "size-4" : "size-6"
+          )}
       >
         {!compact && (
           <div className="size-2 rounded-full bg-background" />
