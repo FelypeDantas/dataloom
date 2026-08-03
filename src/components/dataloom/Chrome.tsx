@@ -19,6 +19,16 @@ const FOOTER_LINKS = [
   { label: "Segurança", href: "#" },
 ] as const;
 
+const appLinkVariants = {
+  ghost:
+    "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+
+  primary: buttonVariants({
+    variant: "default",
+    size: "sm",
+  }),
+} as const;
+
 const containerClassName =
   "mx-auto flex max-w-7xl items-center justify-between px-6";
 
@@ -55,14 +65,7 @@ function AppLink({
   return (
     <Link
       to={to}
-      className={cn(
-        variant === "ghost"
-          ? "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          : buttonVariants({
-              variant: "default",
-              size: "sm",
-            }),
-      )}
+      className={appLinkVariants[variant]}
     >
       {children}
     </Link>
