@@ -7,11 +7,9 @@ interface LogoProps {
   compact?: boolean;
 }
 
-interface AppLinkProps {
-  to: "/app" | "/";
-  children: React.ReactNode;
+type AppLinkProps = React.ComponentProps<typeof Link> & {
   variant?: "ghost" | "primary";
-}
+};
 
 const CURRENT_YEAR = new Date().getFullYear();
 
