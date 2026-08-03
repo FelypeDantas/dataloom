@@ -29,8 +29,11 @@ const appLinkVariants = {
   }),
 } as const;
 
-const containerClassName =
-  "mx-auto flex max-w-7xl items-center justify-between px-6";
+const container =
+  "mx-auto max-w-7xl px-6";
+
+const row =
+  "flex items-center justify-between";
 
 function Logo({ compact = false }: LogoProps) {
   return (
@@ -76,8 +79,7 @@ export function SiteNav() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <nav
-        className={cn(containerClassName, "h-14")}
-        aria-label="Principal"
+          className={cn(container, row, "h-14")}
       >
         <Logo />
 
@@ -102,10 +104,11 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-border py-10">
       <div
-        className={cn(
-          containerClassName,
-          "flex-col gap-6 md:flex-row",
-        )}
+          className={cn(
+              container,
+              row,
+              "flex-col gap-6 md:flex-row"
+          )}
       >
         <Logo compact />
 
