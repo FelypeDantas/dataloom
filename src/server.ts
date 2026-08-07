@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
@@ -17,90 +16,74 @@ interface H3ErrorPayload {
   message: "HTTPError";
 }
 
-function logServerError(error: unknown) {
-  console.error(
-    consumeLastCapturedError() ?? error ?? new Error("Unknown server error"),
-  );
-}
-
 const HTML_HEADERS = {
   "content-type": "text/html; charset=utf-8",
-} as const;
+} satisfies HeadersInit;
 
-let serverEntryPromise: Promise<ServerEntry> | undefined;
+let serverEntryPromise: Promise<ServerEntry> | null = null;
 
-function createInternalServerErrorResponse(): Response {
-  return new Response(renderErrorPage(), {
+const getServerEntry = () =>
+  (serverEntryPromise ??= import("@tanstack/react-start/server-entry").then(
+    (mod) => (mod.default ?? mod) as ServerEntry,
+  ));
+
+const create500Response = () =>
+  new Response(renderErrorPage(), {
     status: 500,
     headers: HTML_HEADERS,
   });
-}
 
-async function getServerEntry(): Promise<ServerEntry> {
-  serverEntryPromise ??= import("@tanstack/react-start/server-entry").then(
-    (module) => (module.default ?? module) as ServerEntry,
+function reportError(error: unknown) {
+  console.error(
+    consumeLastCapturedError() ??
+      error ??
+      new Error("Unknown server error"),
   );
-
-  return serverEntryPromise;
 }
 
-function isH3ErrorPayload(value: unknown): value is H3ErrorPayload {
-  if (typeof value !== "object" || value === null) {
-    return false;
-  }
-
-  const payload = value as Record<string, unknown>;
-
+function isH3Error(value: unknown): value is H3ErrorPayload {
   return (
-    payload.unhandled === true &&
-    payload.message === "HTTPError"
+    typeof value === "object" &&
+    value !== null &&
+    (value as Record<string, unknown>).unhandled === true &&
+    (value as Record<string, unknown>).message === "HTTPError"
   );
 }
 
-function parseH3Payload(body: string): H3ErrorPayload | null {
-  try {
-    const parsed = JSON.parse(body);
-
-    return isH3ErrorPayload(parsed) ? parsed : null;
-  } catch {
-    return null;
-  }
-}
-
-async function normalizeServerResponse(response: Response): Promise<Response> {
-  const contentType = response.headers.get("content-type");
-  
-    if (
-      response.status < 500 ||
-      !contentType?.includes("application/json")
-    ) {
-      return response;
-    }
-
-  const body = await response.clone().text();
-
-  if (!parseH3Payload(body)) {
+async function normalizeResponse(response: Response) {
+  if (
+    response.status < 500 ||
+    !response.headers.get("content-type")?.includes("application/json")
+  ) {
     return response;
   }
 
-  console.error(
-    consumeLastCapturedError() ??
-      new Error(`H3 swallowed SSR error: ${body}`),
-  );
+  let payload: unknown;
 
-  return createInternalServerErrorResponse();
+  try {
+    payload = JSON.parse(await response.clone().text());
+  } catch {
+    return response;
+  }
+
+  if (!isH3Error(payload)) {
+    return response;
+  }
+
+  reportError(new Error("H3 swallowed an SSR error"));
+
+  return create500Response();
 }
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
-      const server = await getServerEntry();
-      const response = await server.fetch(request, env, ctx);
+      const response = await (await getServerEntry()).fetch(request, env, ctx);
 
-      return normalizeServerResponse(response);
+      return normalizeResponse(response);
     } catch (error) {
-      logServerError(error);
-      return createInternalServerErrorResponse();
+      reportError(error);
+      return create500Response();
     }
   },
 };
