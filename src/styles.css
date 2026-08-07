@@ -4,9 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* =========================================================
-   Theme
-========================================================= */
+/* ==========================================================================
+   Theme Tokens
+   ========================================================================== */
 
 @theme inline {
   /* Radius */
@@ -17,15 +17,16 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
 
-  /* Fonts */
+  /* Typography */
   --font-display: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* Colors */
+  /* Semantic colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
   --color-panel: var(--panel);
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
 
@@ -60,21 +61,21 @@
   --shadow-lg: var(--shadow-3);
 }
 
-/* =========================================================
+/* ==========================================================================
    Light Theme
-========================================================= */
+   ========================================================================== */
 
 :root {
   color-scheme: light;
 
-  --radius: .75rem;
+  --radius: 0.75rem;
 
-  /* Background */
+  /* Base */
   --background: oklch(1 0 0);
-  --foreground: oklch(.14 .01 260);
+  --foreground: oklch(0.14 0.01 260);
 
-  /* Surface */
-  --panel: oklch(.985 .002 260);
+  /* Surfaces */
+  --panel: oklch(0.985 0.002 260);
   --card: oklch(1 0 0);
   --popover: var(--card);
 
@@ -82,88 +83,93 @@
   --popover-foreground: var(--foreground);
 
   /* Brand */
-  --brand: oklch(.62 .11 190);
-  --brand-soft: oklch(.62 .11 190 / .08);
+  --brand: oklch(0.62 0.11 190);
+  --brand-soft: oklch(0.62 0.11 190 / 0.08);
 
+  /* Semantic */
   --primary: var(--foreground);
-  --primary-foreground: oklch(.99 0 0);
+  --primary-foreground: oklch(0.99 0 0);
 
-  --secondary: oklch(.97 .003 260);
+  --secondary: oklch(0.97 0.003 260);
   --secondary-foreground: var(--foreground);
 
   --muted: var(--secondary);
-  --muted-foreground: oklch(.50 .015 260);
+  --muted-foreground: oklch(0.5 0.015 260);
 
   --accent: var(--brand);
-  --accent-foreground: oklch(.99 0 0);
+  --accent-foreground: var(--primary-foreground);
 
-  --destructive: oklch(.60 .22 25);
-  --destructive-foreground: oklch(.99 0 0);
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: var(--primary-foreground);
 
-  --border: oklch(.92 .005 260);
+  --border: oklch(0.92 0.005 260);
   --input: var(--border);
   --ring: var(--brand);
 
   /* Shadows */
-  --shadow-1: 0 1px 2px rgb(0 0 0 / .05);
-  --shadow-2: 0 8px 20px rgb(0 0 0 / .08);
-  --shadow-3: 0 16px 40px rgb(0 0 0 / .12);
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-2: 0 8px 20px rgb(0 0 0 / 0.08);
+  --shadow-3: 0 16px 40px rgb(0 0 0 / 0.12);
 }
 
-/* =========================================================
+/* ==========================================================================
    Dark Theme
-========================================================= */
+   ========================================================================== */
 
 .dark {
   color-scheme: dark;
 
-  --background: oklch(.09 .005 260);
-  --foreground: oklch(.98 0 0);
+  --background: oklch(0.09 0.005 260);
+  --foreground: oklch(0.98 0 0);
 
-  --panel: oklch(.13 .008 260);
+  /* Surfaces */
+  --panel: oklch(0.13 0.008 260);
   --card: var(--panel);
   --popover: var(--panel);
 
   --card-foreground: var(--foreground);
   --popover-foreground: var(--foreground);
 
-  --brand: oklch(.70 .13 190);
-  --brand-soft: oklch(.70 .13 190 / .12);
+  /* Brand */
+  --brand: oklch(0.7 0.13 190);
+  --brand-soft: oklch(0.7 0.13 190 / 0.12);
 
+  /* Semantic */
   --primary: var(--foreground);
-  --primary-foreground: oklch(.14 .01 260);
+  --primary-foreground: var(--background);
 
-  --secondary: oklch(.20 .008 260);
+  --secondary: oklch(0.2 0.008 260);
   --secondary-foreground: var(--foreground);
 
   --muted: var(--secondary);
-  --muted-foreground: oklch(.65 .012 260);
+  --muted-foreground: oklch(0.65 0.012 260);
 
   --accent: var(--brand);
   --accent-foreground: var(--background);
 
-  --destructive: oklch(.65 .20 25);
+  --destructive: oklch(0.65 0.2 25);
   --destructive-foreground: var(--foreground);
 
-  --border: oklch(1 0 0 / .10);
-  --input: oklch(1 0 0 / .12);
+  --border: oklch(1 0 0 / 0.1);
+  --input: oklch(1 0 0 / 0.12);
   --ring: var(--brand);
 
-  --shadow-1: 0 1px 2px rgb(0 0 0 / .30);
-  --shadow-2: 0 10px 25px rgb(0 0 0 / .40);
-  --shadow-3: 0 20px 50px rgb(0 0 0 / .55);
+  /* Shadows */
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-2: 0 10px 25px rgb(0 0 0 / 0.4);
+  --shadow-3: 0 20px 50px rgb(0 0 0 / 0.55);
 }
 
-/* =========================================================
+/* ==========================================================================
    Base
-========================================================= */
+   ========================================================================== */
 
 @layer base {
   *,
   *::before,
   *::after {
-    border-color: var(--color-border);
     box-sizing: border-box;
+    border-color: var(--color-border);
   }
 
   html {
@@ -173,10 +179,13 @@
 
   body {
     min-height: 100vh;
-    font-family: var(--font-display);
     background: var(--color-background);
     color: var(--color-foreground);
+
+    font-family: var(--font-display);
+
     text-rendering: optimizeLegibility;
+
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -186,14 +195,14 @@
   }
 }
 
-/* =========================================================
+/* ==========================================================================
    Animations
-========================================================= */
+   ========================================================================== */
 
 @keyframes slide-up {
   from {
     opacity: 0;
-    transform: translateY(.75rem);
+    transform: translateY(0.75rem);
   }
 
   to {
@@ -203,5 +212,5 @@
 }
 
 @utility animate-in-up {
-  animation: slide-up .6s cubic-bezier(.16, 1, .3, 1) both;
+  animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
